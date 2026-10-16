@@ -24,8 +24,17 @@ El HTML **NFS_Caratula_Visor_Referencias_v2.html** se entrega fuera del reposito
 
 **No se despliega en GitHub Pages, no hay datos nominales en este repositorio y no se deben subir archivos con información de menores**. Los folios de referencia y su historial se consultarán exclusivamente mediante roles autenticados y RLS en Supabase. No existe publicación pública de trazados asistenciales individuales.
 
+## Plataforma privada · RBAC v3 (16-oct-2026)
+La aplicación clínica **no se aloja en este repositorio público**. En el proyecto Supabase NFS se implementaron los cuatro roles: `admin_maestro`, `admin_estatal`, `supervisor_distrital`, `promotor_salud`.
+- Únicamente `admin_estatal` puede usar los RPC que devuelven identificación y contacto o permiten emitir PDFs nominales.
+- `supervisor_distrital` y `promotor_salud` consultan folios de su distrito sin identidad nominal.
+- Las solicitudes de contacto de promotores/supervisores son resueltas por el Administrador Estatal; la respuesta operativa no incluye teléfonos o domicilios.
+- Los supervisores solicitan altas de promotores por su distrito; las cuentas requieren aprobación y correo verificado en Supabase Auth.
+- Tablas privadas sin acceso directo del rol `authenticated`; RPCs con autorización de servidor y auditoría.
+- **La interfaz privada v3 se distribuye fuera de GitHub Pages y permanece en vista previa**; faltan primer usuario autorizado, catálogo CLUES verificado y pruebas autenticadas de extremo a extremo.
+
 ## Estado operativo
-La configuración publicable de Supabase está documentada en el aplicativo privado, con `enableProduction=false`. No se ha confirmado acceso administrativo al proyecto `neoihelwsuitgoeowrbc` para instalar/verificar migraciones, RLS, catálogos CLUES o permisos clínicos. **No utilizar datos reales todavía.**
+La configuración publicable de Supabase está documentada en el aplicativo privado, con `enableProduction=false`. Existe acceso administrativo y están aplicadas las migraciones de roles y solicitudes. RLS activado en 15 tablas privadas y permisos anónimos denegados. Pendientes creación de usuarios, CLUES autorizadas y pruebas operativas con autenticación. **No utilizar datos reales todavía.**
 
 Revisar Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados (2025), Ley 82 de Sonora (2025), NOM-004-SSA3-2012 y Lineamiento Técnico Operativo DAI (2026), así como las autorizaciones de la unidad jurídica y del responsable de datos personales.
 
