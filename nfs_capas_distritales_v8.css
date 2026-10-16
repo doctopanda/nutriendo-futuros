@@ -1,0 +1,11 @@
+
+.nfDistrictPanel{margin:17px 0;padding:16px;background:linear-gradient(145deg,#15473c,#1b6551);border:1px solid #71a88d;border-radius:13px;color:#e6f6e8;font-family:system-ui,sans-serif}
+.nfDistrictPanel h3{color:white;font-size:19px;margin:7px 0}.nfDistrictPanel p,.nfDistrictPanel small{color:#c5e2d2;font-size:11px;line-height:1.6}
+.nfLayerEyebrow{font-size:10px;letter-spacing:1.4px;font-weight:800;color:#a6e0b9}.nfLayerLabel{font-size:12px;font-weight:750;display:block;margin:13px 0 7px}
+.nfDistrictPanel select{width:100%;padding:10px;color:#143e30;background:#fff;border:1px solid #91cbae;border-radius:8px}
+.nfLayerCheck{display:flex;align-items:center;gap:10px;padding:11px;margin:8px 0;border:1px solid #ffffff30;border-radius:9px;background:#ffffff12;font-size:12px;cursor:pointer}
+.nfLayerCheck:has(input:disabled){opacity:.45;cursor:not-allowed}.nfLayerCheck input{width:17px;height:17px;accent-color:#b2e7a9}
+.nfLayersStats{font-size:12px;color:#dbf7d7;padding:10px;border-left:3px solid #d9d58b;line-height:1.5;margin-top:14px}
+.nfDistrictPanel details{margin:12px 0;padding:12px;background:#ffffff12;border-radius:8px;font-size:11px}
+.nfDistrictPanel summary{cursor:pointer;font-weight:750}.nfDistrictPanel input[type=file]{width:100%;font-size:11px;margin:10px 0}.nfDistrictPanel a{font-size:11px;color:#b6f1cc;text-decoration:underline}
+.nfSchoolPin{display:grid;place-items:center;width:27px;height:27px;background:#3567ac;border-radius:8px;color:#fff;border:2px solid white;box-shadow:0 2px 8px #0007;font-size:18px}
