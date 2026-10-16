@@ -133,7 +133,7 @@ small{color:#647469}.sect{border-top:1px solid #e0eae1;margin:19px 0 12px;paddin
 <script>
 (function(){"use strict";
 const $=id=>document.getElementById(id),cfg=window.NF_CONFIG||{},url=cfg.url||"",key=cfg.publishableKey||"";
-const ready=/^https:\/\/[a-z0-9.-]+\.supabase\.co$/i.test(url) && key.length>20 && window.supabase;
+const ready=cfg.enableCapture===true && /^https:\/\/[a-z0-9.-]+\.supabase\.co$/i.test(url) && key.startsWith("sb_publishable_") && window.supabase;
 let api=null,count=0,working=false;
 function alertMsg(msg,type){const x=$("message");x.hidden=false;x.className="note "+(type||"");x.textContent=msg;x.scrollIntoView({behavior:"smooth",block:"center"})}
 function addVisit(){if(count>=12)return;const node=$("visitTemplate").content.firstElementChild.cloneNode(true);const n=++count;node.querySelector("h3").textContent="Valoración "+n;node.querySelector(".remove").onclick=()=>{if($("visits").children.length<=1)return;node.remove();count=$("visits").children.length};$("visits").appendChild(node)}
@@ -143,7 +143,7 @@ function validateBasics(person,visits){if(person.autorizacion!=="si")throw Error
 function setBusy(b){working=b;$("saveBtn").disabled=b;$("saveFollowup").disabled=b}
 async function refreshUser(){const {data}=await api.auth.getUser();if(!data?.user){$("workspace").hidden=true;$("loginPanel").hidden=false;return}const r=await api.rpc("nf_mi_perfil");if(r.error||!r.data||!r.data.activo){await api.auth.signOut();$("loginPanel").hidden=false;$("workspace").hidden=true;$("loginStatus").textContent="La cuenta no tiene un perfil institucional activo.";return}$("loginPanel").hidden=true;$("workspace").hidden=false;$("identityRole").textContent="Sesión autorizada · "+(r.data.distrito_id?"Distrito "+r.data.distrito_id:"Estatal")+" · "+r.data.rol;$("adminEdit").hidden=!["admin_estatal","admin_distrital"].includes(r.data.rol)}
 $("addVisit").onclick=addVisit;addVisit();
-if(!ready){$("configNote").textContent="MODO VISTA PREVIA: carátula visual disponible debajo, pero todos los campos y el guardado están bloqueados hasta configurar y auditar Supabase/RLS. No introduzcas datos personales."; $("workspace").hidden=false; $("identityRole").textContent="Vista previa · Sin conexión ni permisos"; $("workspace").querySelectorAll("input,select,textarea,button").forEach(el=>el.disabled=true);return}
+if(!ready){$("configNote").textContent="SUPABASE CONFIGURADO · CAPTURA NO HABILITADA: antes de ingresar pacientes debemos crear y auditar las tablas, RLS, perfiles distritales y catálogo CLUES. La carátula es solo una vista previa con campos y botones bloqueados."; $("workspace").hidden=false; $("identityRole").textContent="Vista previa · Sin conexión ni permisos"; $("workspace").querySelectorAll("input,select,textarea,button").forEach(el=>el.disabled=true);return}
 api=window.supabase.createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true}});
 $("configPanel").hidden=true;$("loginPanel").hidden=false;refreshUser().catch(e=>$("loginStatus").textContent="Error de sesión: "+e.message);
 $("loginBtn").onclick=async()=>{const email=$("email").value.trim(),password=$("pass").value;if(!email||!password)return;$("loginStatus").textContent="Verificando acceso...";const r=await api.auth.signInWithPassword({email,password});$("pass").value="";if(r.error){$("loginStatus").textContent="No fue posible autenticar el acceso.";return}$("loginStatus").textContent="";await refreshUser()};
