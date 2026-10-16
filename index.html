@@ -4292,7 +4292,7 @@ window.NF_DISTRICTS=new Set();window.NF_HEALTH_SELECTED=false;
 let schools=L.layerGroup(),dpolys=L.layerGroup(),rpolys=L.layerGroup(),geoLoaded=false,geoCurrent=null,regionsData=null;
 const side=document.querySelector('.sidebar');if(!side)return;
 const root=document.createElement('section');root.className='nfs9';root.id='nfs9-panel';
-root.innerHTML='<small>🌱 NUTRIENDO FUTUROS · MAPA v9</small><h3>Regionalización y establecimientos</h3>'+ 
+root.innerHTML='<small>🌱 NUTRIENDO FUTUROS · MAPA v9.2</small><h3>Regionalización y establecimientos</h3>'+ 
 '<p>Selecciona uno o varios distritos, o todos. Las capas de CLUES y CCT sólo se dibujarán dentro de la selección.</p>'+ 
 '<div class="row9"><button id="nfs9all">Todos los distritos</button><button id="nfs9none">Limpiar selección</button></div>'+ 
 '<div id="nfs9districts" class="grid9"></div>'+ 
@@ -4312,21 +4312,68 @@ const districtInputs=names.map((n,i)=>{const lab=document.createElement('label')
 root.querySelector('#nfs9colors').innerHTML=names.map((x,i)=>'<span><i style="background:'+colors[i]+'"></i>DS0'+(i+1)+' · '+esc(x)+'</span>').join('');
 root.querySelector('#nfs9all').onclick=()=>{districtInputs.forEach(x=>x.checked=true);refresh()};root.querySelector('#nfs9none').onclick=()=>{districtInputs.forEach(x=>x.checked=false);refresh()};
 [health,school,dcheck,rcheck].forEach(x=>x.onchange=refresh);
-function showGeo(){dpolys.clearLayers();rpolys.clearLayers();[dpolys,rpolys].forEach(x=>map.removeLayer(x));
- if(geoCurrent&&dcheck.checked&&window.NF_DISTRICTS.size){const grp=L.geoJSON(geoCurrent,{filter:f=>window.NF_DISTRICTS.has(byMun[norm(f.properties?.NOMGEO||f.properties?.nomgeo||f.properties?.nombre||f.properties?.name||f.properties?.NOM_MUN)]),style:f=>({color:'#0e2433',weight:.85,opacity:.75,fillColor:colors[(byMun[norm(f.properties?.NOMGEO||f.properties?.nomgeo||f.properties?.nombre||f.properties?.name||f.properties?.NOM_MUN)]||1)-1],fillOpacity:.24}),onEachFeature:(f,l)=>{const n=f.properties?.NOMGEO||f.properties?.nomgeo||f.properties?.nombre||f.properties?.name||'';l.bindTooltip(esc(n)+' · DS0'+byMun[norm(n)])}});grp.addTo(dpolys);dpolys.addTo(map)}
- if(regionsData&&rcheck.checked){const regionSet=new Set(imssRegions.map(norm));L.geoJSON(regionsData,{filter:f=>regionSet.has(norm(f.properties?.region||f.properties?.REGION||'')),style:f=>({color:'#3d7ca4',weight:2.5,dashArray:'6 4',fillOpacity:.035}),onEachFeature:(f,l)=>l.bindTooltip('IMSS-Bienestar · '+esc(f.properties.region||f.properties.REGION))}).addTo(rpolys);rpolys.addTo(map)}
+// Capas de regionalización bajo demanda: se cachean al primer uso y NO se reconstruyen con cada click.
+const cachedDistrictGeo=new Map();
+let cachedGeoSource=null,cachedRegionsSource=null,cachedIMSSLayer=null;
+function getDistrictGeoLayer(d){
+ if(!geoCurrent)return null;
+ if(cachedGeoSource!==geoCurrent){for(const g of cachedDistrictGeo.values())map.removeLayer(g);cachedDistrictGeo.clear();cachedGeoSource=geoCurrent;}
+ if(cachedDistrictGeo.has(d))return cachedDistrictGeo.get(d);
+ const grp=L.geoJSON(geoCurrent,{
+  filter:f=>byMun[norm(f.properties?.NOMGEO||f.properties?.nomgeo||f.properties?.nombre||f.properties?.name||f.properties?.NOM_MUN)]===d,
+  style:f=>({color:'#0e2433',weight:.85,opacity:.75,fillColor:colors[d-1],fillOpacity:.24}),
+  onEachFeature:(f,l)=>{const n=f.properties?.NOMGEO||f.properties?.nomgeo||f.properties?.nombre||f.properties?.name||'';l.bindTooltip(esc(n)+' · DS0'+d)}
+ });
+ cachedDistrictGeo.set(d,grp);return grp;
 }
-const schoolMarkers=Object.create(null);
-function showSchools(){schools.clearLayers();map.removeLayer(schools);if(!school.checked)return;let n=0;for(const rec of NFS_SCHOOLS){if(!window.NF_DISTRICTS.has(rec.distrito))continue;
- const marker=L.circleMarker([rec.lat,rec.lon],{radius:4.2,weight:1,color:'#fff',fillColor:'#4168a7',fillOpacity:.9,renderer:L.canvas()}).bindPopup('<b>'+esc(rec.nombre)+'</b><div>CCT '+esc(rec.cct)+' · '+esc(rec.turno)+'</div><div>'+esc(rec.municipio)+' / '+esc(rec.localidad)+'</div>');marker.addTo(schools);n++}schools.addTo(map)}
+function showGeo(){
+ const active=dcheck.checked?window.NF_DISTRICTS:new Set();
+ for(const [d,g] of cachedDistrictGeo){if(!active.has(d)&&map.hasLayer(g))map.removeLayer(g)}
+ if(geoCurrent&&active.size){for(const d of active){const g=getDistrictGeoLayer(d);if(g&&!map.hasLayer(g))g.addTo(map)}}
+ if(regionsData!==cachedRegionsSource){if(cachedIMSSLayer)map.removeLayer(cachedIMSSLayer);cachedRegionsSource=regionsData;cachedIMSSLayer=null;}
+ if(regionsData&&rcheck.checked&&window.NF_DISTRICTS.size){
+  if(!cachedIMSSLayer){const regionSet=new Set(imssRegions.map(norm));cachedIMSSLayer=L.geoJSON(regionsData,{
+   filter:f=>regionSet.has(norm(f.properties?.region||f.properties?.REGION||'')),
+   style:f=>({color:'#3d7ca4',weight:2.5,dashArray:'6 4',fillOpacity:.035}),
+   onEachFeature:(f,l)=>l.bindTooltip('IMSS-Bienestar · '+esc(f.properties.region||f.properties.REGION))
+  });}
+  if(!map.hasLayer(cachedIMSSLayer))cachedIMSSLayer.addTo(map);
+ }else if(cachedIMSSLayer&&map.hasLayer(cachedIMSSLayer))map.removeLayer(cachedIMSSLayer);
+}
+// Renderizador Canvas ÚNICO + grupos cacheados por distrito (CCT).
+// Se construye cada marcador máximo una vez, no una vez por interacción.
+const schoolCanvas=L.canvas({padding:.35});
+const schoolGroups=new Map(),schoolActive=new Set();
+const schoolRecordsByDistrict=new Map(names.map((_,i)=>[i+1,[]]));
+for(const record of NFS_SCHOOLS){const arr=schoolRecordsByDistrict.get(record.distrito);if(arr)arr.push(record)}
+const healthCountsByDistrict=new Map(names.map((_,i)=>[i+1,0]));
+for(const f of fac){const d=byMun[norm(f.municipio)];if(d)healthCountsByDistrict.set(d,(healthCountsByDistrict.get(d)||0)+1)}
+function getSchoolGroup(d){
+ if(schoolGroups.has(d))return schoolGroups.get(d);
+ const group=L.layerGroup();
+ for(const rec of schoolRecordsByDistrict.get(d)||[]){
+  L.circleMarker([rec.lat,rec.lon],{radius:4.2,weight:1,color:'#fff',fillColor:'#4168a7',fillOpacity:.9,renderer:schoolCanvas})
+   .bindPopup('<b>'+esc(rec.nombre)+'</b><div>CCT '+esc(rec.cct)+' · '+esc(rec.turno)+'</div><div>'+esc(rec.municipio)+' / '+esc(rec.localidad)+'</div>')
+   .addTo(group);
+ }
+ schoolGroups.set(d,group);return group;
+}
+function showSchools(){
+ const selected=school.checked?window.NF_DISTRICTS:new Set();
+ for(const d of [...schoolActive]){if(!selected.has(d)){const g=schoolGroups.get(d);if(g)map.removeLayer(g);schoolActive.delete(d)}}
+ for(const d of selected){if(!schoolActive.has(d)){getSchoolGroup(d).addTo(map);schoolActive.add(d)}}
+}
+let lastHealthSignature=null;
 function refresh(){const chosen=new Set(districtInputs.filter(x=>x.checked).map(x=>Number(x.value)));window.NF_DISTRICTS=chosen;const ok=chosen.size>0;
 for(const x of [health,school,dcheck])x.disabled=!ok;
 rcheck.disabled=!ok||!regionsData;
 if(!ok){health.checked=false;school.checked=false;dcheck.checked=false;rcheck.checked=false}
 window.NF_HEALTH_SELECTED=ok&&health.checked;
-if(typeof window.NF_REFRESH_FACILITIES==='function')window.NF_REFRESH_FACILITIES();
+const healthSignature=(ok&&health.checked?'1':'0')+':'+[...chosen].sort().join(',');
+if(healthSignature!==lastHealthSignature&&typeof window.NF_REFRESH_FACILITIES==='function')window.NF_REFRESH_FACILITIES();
+lastHealthSignature=healthSignature;
 const legacy=side.querySelector('.healthSection');if(legacy)legacy.style.display=window.NF_HEALTH_SELECTED?'':'none';
-showSchools();showGeo();const sf=NFS_SCHOOLS.filter(x=>chosen.has(x.distrito)).length;const hf=fac.filter(x=>chosen.has(byMun[norm(x.municipio)])).length;
+showSchools();showGeo();const sf=[...chosen].reduce((sum,d)=>sum+(schoolRecordsByDistrict.get(d)||[]).length,0);const hf=[...chosen].reduce((sum,d)=>sum+(healthCountsByDistrict.get(d)||0),0);
 info.textContent=ok?'Distritos: '+Array.from(chosen).sort().map(x=>'DS0'+x).join(', ')+' · '+sf+' preescolares CCT · '+hf+' unidades CLUES disponibles en mapa. '+(!geoLoaded?'Polígonos municipales: descarga pendiente / no verificada.':'Polígonos municipales: fuente externa cargada.'):'Selecciona al menos un Distrito de Salud.';
 }
 const url='https://raw.githubusercontent.com/PhantomInsights/mexico-geojson/main/2023/states/Sonora.json';
