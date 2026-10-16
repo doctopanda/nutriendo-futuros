@@ -2,9 +2,16 @@
 
 Este **repositorio público** alberga únicamente la representación territorial y los catálogos de establecimientos. **NO** alberga pacientes, historiales clínicos ni referencias por folio.
 
+## Rendimiento v9.2
+- **1 Canvas compartido** para dibujar las escuelas; se eliminaron cientos de instancias de renderizado redundantes.
+- Los marcadores CCT se crean sólo la primera vez que se activa cada distrito y se **reutilizan** al alternar las casillas.
+- Las capas regionales se mantienen en memoria y se regeneran sólo cuando cambia el GeoJSON fuente.
+- Las unidades CLUES no se redibujan por cambios exclusivos en escuelas/regionalización.
+- **Siguiente paso recomendado:** sacar CCT, CLUES y polígonos del HTML y servir archivos geoespaciales públicos optimizados por distrito desde GitHub Pages/CDN. Los expedientes y referencias nominales siguen exclusivamente en Supabase privado, con RLS.
+
 ## Mapa público
 - [Abrir mapa (GitHub Pages)](https://doctopanda.github.io/nutriendo-futuros/) una vez que GitHub Pages esté habilitado.
-- `index.html`: **v9 multidistrital**, permite seleccionar uno, varios o los seis Distritos de Salud, o limpiarlos todos.
+- `index.html`: **v9.2 multidistrital optimizado**, permite seleccionar uno, varios o los seis Distritos de Salud, o limpiarlos todos.
 - **1,256 preescolares CCT** con coordenadas, procesados del archivo `concentrado_escuelas.xls` proporcionado para el proyecto; aparecen al activar la capa escolar en distritos seleccionados.
 - **73 unidades médicas** de CLUES provenientes de la cartografía previa, actualmente disponibles para Hermosillo, Nogales y San Luis Río Colorado.
 - Regionalización distrital por colores: basada en adscripción de 72 municipios y geometría municipal cuando esté disponible. Puede importarse GeoJSON oficial desde [Datos Abiertos de Sonora](https://datos.sonora.gob.mx/dataset/).
