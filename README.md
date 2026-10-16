@@ -1,74 +1,36 @@
-## Arquitectura actual · 16 octubre 2026
-- **GitHub Pages se reserva para cartografía y establecimientos públicos.** La app privada de captura y visor se entrega como HTML independiente, no se aloja en este repositorio público.
-- `index.html`: mapa v8, conserva polígonos v7.2, exige Distrito de Salud para activar CLUES y escuelas CCT.
-- `respaldos/mapa_desnutricion_ultra_v7_2_respaldo.html`: copia completa original (restauración).
-- `nfs_capas_distritales_v8.js` y `nfs_capas_distritales_v8.css`: controles cartográficos y filtrado.
-- **CLUES:** 73 establecimientos ya embebidos en el mapa en Hermosillo (DS01), Nogales (DS03) y San Luis Río Colorado (DS06). No equivalen a adscripción.
-- **Escuelas:** identificadores CCT, no CLUES. Para visualizar la capa debe importarse CSV oficial SEP con campos CCT,NOMBRE,MUNICIPIO,LATITUD,LONGITUD; no se han precargado escuelas no verificadas.
-- **Datos de pacientes:** nunca incluir nominales, domicilios ni coordenadas de hogares. La aplicación privada permanece bloqueada hasta aprobar Supabase Auth, RLS, auditoría, catálogo de distritos/CLUES y los flujos de consentimiento.
-- **Marco de referencia:** Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados (DOF 20-mar-2025), Ley 82 de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de Sonora (BO 29-ago-2025), NOM-004-SSA3-2012 y lineamiento DAI 2026. Requiere validación jurídica e institucional.
+# 🌱 Nutriendo Futuros Saludables · Mapa Sonora
 
+Mapa territorial público para la estrategia de Desnutrición Aguda Infantil. **Este repositorio NO es una base nominal ni un sitio de captura de pacientes.**
 
----
+## Visor
+- `index.html`: visor cartográfico basado en RIESGO DESNUTRICIÓN ULTRA v7.2.
+- `nfs_capas_distritales_v8.js` y `.css`: selección obligatoria de Distrito de Salud para activar establecimientos.
+- `respaldos/mapa_desnutricion_ultra_v7_2_respaldo.html`: copia íntegra del mapa previo.
+- `supabase/`: borradores SQL para el sistema interno. **No aplicados ni verificados en el proyecto Supabase de destino.**
 
-# 🌱 Nutriendo Futuros Saludables | Sonora
+GitHub Pages (una vez habilitado): https://doctopanda.github.io/nutriendo-futuros/
 
-## Estado del despliegue
-- **Mapa geográfico:** \`index.html\`, derivado del respaldo **RIESGO DESNUTRICIÓN ULTRA v7.2** (Hermosillo, Nogales y San Luis Río Colorado). Incluye polígonos, categorías de riesgo exploratorias y correspondencia geográfica con unidades CLUES.
-- **Carátula digital:** \`captura.html\`, contiene variables de la cédula oficial y hasta 12 consultas, pero **no habilitar captura real** hasta completar Supabase y auditoría.
-- **Datos nominales:** **NO** están almacenados en este repositorio. \`INFO NOGALES.xlsx\` es material privado de trabajo, no se sube ni se incrusta en JavaScript.
-- **Supabase:** los archivos \`supabase/schema_v0_1.sql\`, \`supabase/migracion_v0_2_edicion.sql\` y \`supabase/migracion_v0_3_catalogo_clues.sql\` contienen una propuesta estructural pendiente de pruebas y revisión de seguridad. La migración v0.3 bloqueará altas sin CLUES verificadas.
-- **Acceso público:** GitHub Pages, una vez activado en **Settings → Pages → Deploy from a branch → main → /(root)**.
+## Distritos y alcance inicial
+Se ofrecen los seis distritos oficiales de Sonora: 01 Hermosillo, 02 Caborca, 03 Santa Ana, 04 Cajeme, 05 Navojoa, 06 San Luis Río Colorado.
+El respaldo cartográfico sólo incluye polígonos recuperados en **Hermosillo (DS01), Nogales (DS03) y San Luis Río Colorado (DS06)**. Los demás distritos no deben representarse como cubiertos hasta integrar cartografía validada.
 
-## URLs previstas
-- Mapa: https://doctopanda.github.io/nutriendo-futuros/
-- Captura: (aplicación privada no alojada en GitHub Pages)
+## Capas y catálogos
+- **CLUES (salud):** 73 establecimientos de primer y segundo nivel, provenientes del catálogo maestro `ESTABLECIMIENTO_SALUD_202608` ya integrado en v7.2. La asignación por proximidad es territorial, **no adscripción**.
+- **CCT (escuelas):** casilla separada con importador CSV local. No se inventan claves ni ubicaciones; para dibujar escuelas hay que cargar un CSV oficial SEP con columnas `CCT,NOMBRE,MUNICIPIO,LATITUD,LONGITUD`. El archivo se procesa únicamente en el navegador.
+- **Condición de visibilidad:** ambas casillas están deshabilitadas hasta seleccionar un distrito. Sólo se dibujan establecimientos de los municipios disponibles correspondientes al distrito elegido.
+- **Fuente CCT:** https://www.datos.gob.mx/dataset/catalogo_centros_trabajo_sep
+- **Distritos oficiales:** https://salud.sonora.gob.mx/index.php?id=61&option=com_sppagebuilder&view=page
 
-## Conexión a Supabase (NO activar aún con información real)
-1. Crear un **nuevo proyecto Supabase** para esta estrategia.
-2. Revisar políticas RLS y permisos **antes** de introducir registros.
-3. Ejecutar/ajustar el SQL, crear usuarios por Supabase Auth y asignar distritos/roles en \`nf_private.perfiles\`.
-4. Integrar un catálogo validado **CLUES → municipio → distrito** y bloquear discrepancias en el servidor (pendiente).
-5. Configurar \`config.js\` con solo **Project URL** y **publishable/anon key**. Ambas pueden estar en un cliente web cuando RLS sea seguro; **nunca** usar \`service_role\`, secretos, contraseñas, tokens administrativos ni claves privadas.
-6. Probar con identidades **ficticias**: nuevo caso, mismo caso, concurrencia, folios, cambio de distrito, seguimiento, sesión inválida y rechazo de acceso entre distritos.
-7. Aprobar formalmente anonimización territorial, seguridad, respaldos y tratamiento de información de menores antes del pilotaje real.
+## Plataforma privada NFS
+La **Carátula y Visor NFS** es un HTML independiente entregado fuera de GitHub Pages. Su estructura prevé Supabase Auth, RLS, funciones RPC, folio `NF-DSn-00000001`, detección de duplicados y auditoría. Permanecerá bloqueado hasta instalar, auditar y aprobar migraciones, perfiles y catálogo CLUES por distrito.
 
-Ver **docs/diccionario_cedula_dai.md** para variables de la cédula y la conciliación de Nogales.
+**PROHIBIDO** incorporar expedientes, CURP, nombres de pacientes, domicilios, teléfonos, fotos de menores, coordenadas de hogares, secretos `service_role` o archivos nominales a commits/Issues/Actions de GitHub.
 
-## Modelo lógico
-\`\`\`
-GitHub Pages (interfaz pública)
- ├─ index.html                → Mapa territorial v7.2 SIN DATOS NOMINALES
- ├─ captura.html              → Acceso autenticado; campos nominales solo durante captura
- └─ config.js                 → URL y clave pública (VACÍAS al inicio)
-                         ↓ HTTPS/TLS + Supabase Auth
-Supabase
- ├─ nf_private.perfiles       → rol, distrito, autorización
- ├─ nf_private.pacientes     → identidad restringida + folio
- ├─ nf_private.seguimientos  → 1:N, cédulas longitudinales
- ├─ nf_private.folios_distritales → secuencias transaccionales por distrito
- ├─ nf_private.auditoria     → eventos sin información identificable
- └─ public.nf_agregados_autorizados → publicación manual validada, sin celdas pequeñas
-\`\`\`
+## Revisión normativa indispensable antes del piloto
+- Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados (DOF 20-03-2025).
+- **Ley 82** de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de Sonora (Boletín Oficial 29-08-2025).
+- NOM-004-SSA3-2012 del expediente clínico.
+- Lineamiento Técnico Operativo para el abordaje de la DAI (2026).
+- Verificación jurídica de aviso de privacidad, fundamento del tratamiento, consentimiento cuando proceda, finalidad, plazo de conservación, contratos con encargados, transferencias, accesos y ejercicio ARCO.
 
-## Formato y duplicados
-Folio \`NF-DSn-00000001\`, con \`n\` entre 1 y 6. Cada distrito tiene un contador atómico en la base. Se busca CURP si está disponible y/o coincidencia exacta del nombre normalizado, fecha de nacimiento y sexo. Si se detecta un registro del distrito, se muestra **solo el folio**, sin presentar nombre ni otros identificadores. Un caso de otro distrito requiere revisión institucional (no se revela su folio). Los falsos positivos, faltantes y traslados entre distritos necesitan reglas operativas adicionales.
-
-## Fundamento clínico-operativo
-Fuentes entregadas:
-- *Lineamiento Técnico Operativo para el abordaje de la Desnutrición Aguda Infantil en México* (2026).
-- *Estrategia para el Manejo de la DAI, Nutriendo Futuros Saludables*: guía de actividades.
-- *Manual de Funciones Operativas: Estrategia Nutriendo Futuros Saludables*.
-- *Cédula de seguimiento de la DAI en niñas y niños de 0 a 5 años*.
-
-La plataforma refleja los campos de esos formatos. **No calcula ni valida puntajes Z automáticamente**, ya que hacerlo correctamente exige tablas OMS, reglas de edad/sexo y validación clínica. Tampoco se debe interpretar el índice cartográfico exploratorio de v7.2 como prevalencia confirmada.
-
-## Principios de seguridad
-- No incorporar fuentes originales nominales, carpetas de descargas, archivos Excel personales o exportaciones individualizadas en commits, GitHub Pages ni GitHub Actions.
-- No permitir consultas API directas sobre \`nf_private\` desde el navegador.
-- No mostrar nombres en tablas, búsquedas, reportes o respuestas de registro; la pantalla de captura por necesidad sí solicita identidad al personal autorizado.
-- Suprimir/perturbar resultados agregados con riesgo de reidentificación y evitar publicar coordenadas de viviendas o rutas individualizadas.
-- Aprobar reglas de conservación, corrección, consentimiento, responsables del tratamiento, control de accesos, bitácora y respuesta a incidentes antes de operar.
-- Mantener respaldo de la versión v7.2 antes de alterar cartografía o lógica.
-
-**Etapa actual (16-oct-2026):** código publicado en el repositorio y URL/clave publicable configuradas; `enableCapture: false`. El conector Supabase accesible desde ChatGPT solo muestra el proyecto PULSO, no `neoihelwsuitgoeowrbc`: no se han aplicado migraciones ni confirmado el RLS de este proyecto. No es un sistema clínico validado ni un repositorio de pacientes operativo.
+**Estado:** cartografía e interfaz preparadas. La conexión, la autorización de usuarios y el cumplimiento técnico-jurídico del tratamiento de datos deben probarse antes de capturas reales.
