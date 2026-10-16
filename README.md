@@ -58,4 +58,4 @@ La plataforma refleja los campos de esos formatos. **No calcula ni valida puntaj
 - Aprobar reglas de conservación, corrección, consentimiento, responsables del tratamiento, control de accesos, bitácora y respuesta a incidentes antes de operar.
 - Mantener respaldo de la versión v7.2 antes de alterar cartografía o lógica.
 
-**Etapa actual:** prototipo estructural y traslado del mapa. No es todavía un sistema clínico validado ni un repositorio de pacientes operativo.
+**Etapa actual (16-oct-2026):** código publicado en el repositorio y URL/clave publicable configuradas; `enableCapture: false`. El conector Supabase accesible desde ChatGPT solo muestra el proyecto PULSO, no `neoihelwsuitgoeowrbc`: no se han aplicado migraciones ni confirmado el RLS de este proyecto. No es un sistema clínico validado ni un repositorio de pacientes operativo.
