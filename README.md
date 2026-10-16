@@ -4,7 +4,7 @@
 - **Mapa geográfico:** \`index.html\`, derivado del respaldo **RIESGO DESNUTRICIÓN ULTRA v7.2** (Hermosillo, Nogales y San Luis Río Colorado). Incluye polígonos, categorías de riesgo exploratorias y correspondencia geográfica con unidades CLUES.
 - **Carátula digital:** \`captura.html\`, contiene variables de la cédula oficial y hasta 12 consultas, pero **no habilitar captura real** hasta completar Supabase y auditoría.
 - **Datos nominales:** **NO** están almacenados en este repositorio. \`INFO NOGALES.xlsx\` es material privado de trabajo, no se sube ni se incrusta en JavaScript.
-- **Supabase:** \`supabase/schema_v0_1.sql\` es un borrador de infraestructura que necesita revisión técnica, catálogo CLUES-distrito, pruebas de concurrencia, revisión legal y seguridad antes de uso real.
+- **Supabase:** los archivos \`supabase/schema_v0_1.sql\`, \`supabase/migracion_v0_2_edicion.sql\` y \`supabase/migracion_v0_3_catalogo_clues.sql\` contienen una propuesta estructural pendiente de pruebas y revisión de seguridad. La migración v0.3 bloqueará altas sin CLUES verificadas.
 - **Acceso público:** GitHub Pages, una vez activado en **Settings → Pages → Deploy from a branch → main → /(root)**.
 
 ## URLs previstas
@@ -19,6 +19,8 @@
 5. Configurar \`config.js\` con solo **Project URL** y **publishable/anon key**. Ambas pueden estar en un cliente web cuando RLS sea seguro; **nunca** usar \`service_role\`, secretos, contraseñas, tokens administrativos ni claves privadas.
 6. Probar con identidades **ficticias**: nuevo caso, mismo caso, concurrencia, folios, cambio de distrito, seguimiento, sesión inválida y rechazo de acceso entre distritos.
 7. Aprobar formalmente anonimización territorial, seguridad, respaldos y tratamiento de información de menores antes del pilotaje real.
+
+Ver **docs/diccionario_cedula_dai.md** para variables de la cédula y la conciliación de Nogales.
 
 ## Modelo lógico
 \`\`\`
