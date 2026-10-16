@@ -1,3 +1,16 @@
+## Arquitectura actual · 16 octubre 2026
+- **GitHub Pages se reserva para cartografía y establecimientos públicos.** La app privada de captura y visor se entrega como HTML independiente, no se aloja en este repositorio público.
+- `index.html`: mapa v8, conserva polígonos v7.2, exige Distrito de Salud para activar CLUES y escuelas CCT.
+- `respaldos/mapa_desnutricion_ultra_v7_2_respaldo.html`: copia completa original (restauración).
+- `nfs_capas_distritales_v8.js` y `nfs_capas_distritales_v8.css`: controles cartográficos y filtrado.
+- **CLUES:** 73 establecimientos ya embebidos en el mapa en Hermosillo (DS01), Nogales (DS03) y San Luis Río Colorado (DS06). No equivalen a adscripción.
+- **Escuelas:** identificadores CCT, no CLUES. Para visualizar la capa debe importarse CSV oficial SEP con campos CCT,NOMBRE,MUNICIPIO,LATITUD,LONGITUD; no se han precargado escuelas no verificadas.
+- **Datos de pacientes:** nunca incluir nominales, domicilios ni coordenadas de hogares. La aplicación privada permanece bloqueada hasta aprobar Supabase Auth, RLS, auditoría, catálogo de distritos/CLUES y los flujos de consentimiento.
+- **Marco de referencia:** Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados (DOF 20-mar-2025), Ley 82 de Protección de Datos Personales en Posesión de Sujetos Obligados del Estado de Sonora (BO 29-ago-2025), NOM-004-SSA3-2012 y lineamiento DAI 2026. Requiere validación jurídica e institucional.
+
+
+---
+
 # 🌱 Nutriendo Futuros Saludables | Sonora
 
 ## Estado del despliegue
@@ -9,7 +22,7 @@
 
 ## URLs previstas
 - Mapa: https://doctopanda.github.io/nutriendo-futuros/
-- Captura: https://doctopanda.github.io/nutriendo-futuros/captura.html
+- Captura: (aplicación privada no alojada en GitHub Pages)
 
 ## Conexión a Supabase (NO activar aún con información real)
 1. Crear un **nuevo proyecto Supabase** para esta estrategia.
