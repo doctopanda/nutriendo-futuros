@@ -1,0 +1,87 @@
+/* NUTRIENDO FUTUROS · Identidad Mezquite · 2026-11-03
+   Visual-only. No cambia datos, roles, autorización, mapas ni RPCs. */
+:root{
+ --nf-venosaur-teal:#409993;--nf-venosaur-aqua:#7BB7B7;--nf-venosaur-green:#5E9569;
+ --nf-venosaur-pink:#EC889B;--nf-venosaur-bark:#817060;--nf-venosaur-cream:#F6F0E4;
+ --nf-mezquite-deep:#075A59;--nf-mezquite-ink:#083F42;--nf-mezquite-stone:#D8E7D8;
+}
+body.nf-mezquite{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body.nf-mezquite button:focus-visible,body.nf-mezquite a:focus-visible,body.nf-mezquite input:focus-visible,
+body.nf-mezquite select:focus-visible,body.nf-mezquite textarea:focus-visible{outline:3px solid var(--nf-venosaur-pink)!important;outline-offset:2px}
+body.nf-mezquite .nf-brand-mark{height:54px;width:54px;object-fit:contain;display:block;flex:0 0 auto;filter:drop-shadow(0 3px 7px rgba(0,0,0,.13))}
+body.nf-mezquite .nf-brand-copy{display:flex;flex-direction:column;gap:3px}
+body.nf-mezquite .nf-brand-wordmark{font-size:clamp(15px,1.4vw,20px);line-height:1.03;letter-spacing:.01em;font-weight:850;color:var(--nf-venosaur-cream)}
+body.nf-mezquite .nf-brand-strap{font-size:9px;font-weight:750;letter-spacing:.16em;color:var(--nf-venosaur-aqua);text-transform:uppercase}
+body.nf-mezquite .nf-brand-identity{display:flex;align-items:center;gap:10px;padding:10px 8px;border:1px solid rgba(246,240,228,.2);border-radius:17px;background:linear-gradient(125deg,rgba(64,153,147,.30),rgba(94,149,105,.12));box-shadow:0 5px 22px rgba(0,32,34,.12)}
+body.nf-mezquite .nf-brand-identity::after{content:"";width:5px;height:5px;flex:0 0 auto;border-radius:50%;background:var(--nf-venosaur-pink);margin-left:auto}
+
+/* Visor institucional */
+body.nf-mezquite.nf-visor{
+ --forest:#075A59;--jade:#176E6B;--leaf:#5E9569;--lime:#E8ECCF;
+ --ink:#214B47;--muted:#627D76;--line:#CEDFDC;--pale:#F3F8F5;--gold:#BFAE8D;
+ background:#F3F8F5;color:var(--ink)
+}
+body.nf-visor .sidebar{background:linear-gradient(171deg,#083F42 0%,#075A59 56%,#376F58 100%)!important;color:var(--nf-venosaur-cream)}
+body.nf-visor .brand.nf-brand-identity{font-size:inherit;letter-spacing:normal;line-height:normal}
+body.nf-visor .sidebar .side-sub{color:#C8E2D8;border-bottom-color:rgba(246,240,228,.22)}
+body.nf-visor .sidebar .nav button{color:#E4EFE9;border-radius:13px;transition:background-color .15s ease,border-color .15s ease}
+body.nf-visor .sidebar .nav button:hover,body.nf-visor .sidebar .nav button.active{background:rgba(123,183,183,.22);border-color:rgba(246,240,228,.18);color:#fff}
+body.nf-visor .sidebar .side-bottom{color:#C9E6DD;border-color:rgba(246,240,228,.22)}
+body.nf-visor .panel{border-color:#D8E7E1;border-radius:18px;box-shadow:0 4px 22px rgba(8,63,66,.055)}
+body.nf-visor .hero{background:linear-gradient(105deg,#075A59 0%,#176F6B 58%,#5E9569 120%)!important;border:1px solid rgba(246,240,228,.12);position:relative}
+body.nf-visor .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 20%,rgba(236,136,155,.20),transparent 40%);pointer-events:none}
+body.nf-visor .hero .decor{display:block;width:145px;height:145px;max-width:35vw;background:url("mezquite-emblema.svg") center/contain no-repeat;font-size:0!important;opacity:.95}
+body.nf-visor .tag{background:#E2F0E9;color:#0B5E58}
+body.nf-visor .tag.warm{background:#FDF0EC;color:#8F5963}
+body.nf-visor :is(button.btn,.btn){background:#087571;color:#fff;border-color:#087571}
+body.nf-visor :is(button.btn,.btn):hover{background:#075A59}
+body.nf-visor .nfs-map-head{background:linear-gradient(90deg,#E7F1EC,#F7F6EE);border-color:#D3E3DD}
+body.nf-visor .nfs-map-link{color:#075A59}
+body.nf-visor .seed-gate{background:radial-gradient(circle at 79% 24%,#D9EFE7 0%,#EDF6EF 42%,#DCECE4 100%)!important}
+body.nf-visor .seed-brand h2{color:#075A59}
+body.nf-visor .seed-brand p{color:#466F68}
+body.nf-visor .seed-badge{background:#DDF0EB;color:#075A59;border-color:#BCD7CD}
+body.nf-visor .seed-scene{background:linear-gradient(165deg,#075A59,#08716C 64%,#5E9569)!important;border:2px solid rgba(246,240,228,.45);box-shadow:0 18px 48px rgba(8,63,66,.2);isolation:isolate}
+body.nf-visor .seed-scene :is(.seed-sky,.seed-ground,.seed-mound,.seed-stem,.seed-leaf,.seed-seal){display:none!important}
+body.nf-visor .seed-scene::before{content:"";position:absolute;inset:5%;border:1px solid rgba(246,240,228,.25);border-radius:22px;pointer-events:none}
+body.nf-visor .seed-scene::after{content:"";position:absolute;inset:5% 3%;background:url("mezquite-emblema.svg") center/contain no-repeat;filter:drop-shadow(0 14px 18px rgba(0,35,38,.23));pointer-events:none}
+body.nf-visor .seed-card{border-color:#D3E2D6;box-shadow:0 16px 42px rgba(8,63,66,.12)}
+body.nf-visor .seed-card :is(input,select){border-color:#BFD7D3}
+body.nf-visor .seed-card button[type=submit]{background:#075A59;color:var(--nf-venosaur-cream)}
+body.nf-visor .seed-card button[type=submit]:hover{background:#0A7770}
+
+/* Mapa territorial: conservar capa geográfica y distinciones por distrito */
+body.nf-map{background:#0B3E41;color:var(--nf-venosaur-cream)}
+body.nf-map #app{background:#0B3E41}
+body.nf-map .sidebar{background:linear-gradient(175deg,#083F42 0%,#075A59 65%,#235D56 100%)!important;color:var(--nf-venosaur-cream)!important;border-right:1px solid rgba(246,240,228,.18)}
+body.nf-map .brand.nf-brand-identity{font-size:inherit;font-weight:inherit;letter-spacing:normal}
+body.nf-map .sidebar .sub{color:#B9DDD4;line-height:1.45;padding:4px 7px}
+body.nf-map .sidebar .chip{background:rgba(8,63,66,.60);border:1px solid rgba(123,183,183,.36);color:#E6F3F0}
+body.nf-map .sidebar :is(input,select,button){border-color:#588C86;background-color:#0A4B4A;color:#fff;border-radius:10px}
+body.nf-map .sidebar :is(input,select,button):hover{border-color:var(--nf-venosaur-aqua)}
+body.nf-map .sidebar .row label{color:#D6E7DF}
+body.nf-map .nfs9{background:#0B5150;border:1px solid #6FA8A1;border-radius:15px;box-shadow:0 8px 18px rgba(1,34,36,.16)}
+body.nf-map .nfs9 :is(h3,h4){color:#F6F0E4}
+body.nf-map .nfs9 :is(p,small){color:#D6EDE5}
+body.nf-map .nfs9 button{background:#3E8780;color:#fff}
+body.nf-map .nfs9 button:hover{background:#52998A}
+body.nf-map .nfs9 input[type=checkbox]{accent-color:var(--nf-venosaur-pink)}
+body.nf-map .nfSchoolMarker{background:#409993!important;border:2px solid #F6F0E4!important;color:#F6F0E4!important;box-shadow:0 2px 8px rgba(8,63,66,.3)}
+body.nf-map .facMarker{border-color:#F6F0E4}
+body.nf-map .leaflet-control-zoom a{color:#075A59;background:#F6F0E4}
+body.nf-map .leaflet-control-attribution{font-size:10px}
+
+/* Compatibilidad con dimensiones pequeñas y accesibilidad */
+@media(max-width:900px){
+ body.nf-visor .brand.nf-brand-identity{max-width:100%}
+ body.nf-visor .hero .decor{width:95px;height:95px}
+ body.nf-visor .seed-scene{min-height:200px}
+}
+@media(max-width:560px){
+ body.nf-map .nf-brand-mark,body.nf-visor .nf-brand-mark{width:45px;height:45px}
+ body.nf-map .nf-brand-wordmark,body.nf-visor .nf-brand-wordmark{font-size:16px}
+ body.nf-visor .seed-scene{min-height:165px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.nf-mezquite .nav button{transition:none}
+}
