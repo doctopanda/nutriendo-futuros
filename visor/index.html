@@ -24,8 +24,8 @@
 .nfs-autoreadonly{background:#f3f2f7!important;color:#615c70!important;cursor:default}
 .nfs-auto-note{font-size:11px;color:#74697d;margin:5px 0 0;line-height:1.35}
 .nfs-auto-legend{font-size:12px;color:#61566a;padding:10px 13px;border-radius:12px;border:1px dashed #b7a8c6;background:#faf9fc;margin:14px 0}
-</style></head>
-<body class="gated">
+</style><link rel="stylesheet" href="../assets/mezquite-theme.css"><link rel="icon" type="image/svg+xml" href="../assets/mezquite-icono.svg"><meta name="theme-color" content="#075A59"></head>
+<body class="gated nf-mezquite nf-visor">
 <style id="nfs-v4-role-gate-styles">
 body.gated{overflow:hidden}
 .seed-gate{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at top,#edf7f0 0%,#e4f0e8 36%,#d6e7dc 70%,#cfe0d6 100%);display:flex;align-items:center;justify-content:center;padding:22px;transition:opacity .55s ease,visibility .55s ease}
@@ -54,7 +54,7 @@ body:not(.unlocked) .shell{visibility:hidden;pointer-events:none}body.unlocked .
 
 <section id="seedGate" class="seed-gate" aria-modal="true" role="dialog">
   <div class="seed-stage">
-    <div class="seed-brand"><span class="seed-badge">NFS · Acceso institucional</span><h2>Nutriendo Futuros Saludables</h2><p>Ingresa con tus credenciales autorizadas. Mantuvimos una atmósfera verde bosque y un sello vegetal en reposo; más adelante podremos asignarle un nombre definitivo a esta portada.</p></div>
+    <div class="seed-brand"><span class="seed-badge">NFS · Acceso institucional</span><h2>Nutriendo Futuros Saludables</h2><p>Ingresa con tus credenciales institucionales autorizadas. Nuestro mezquite sonorense representa cobijo, alimento y comunidad desde las raíces.</p></div>
     <div class="seed-scene" aria-hidden="true">
       <div class="seed-sky"></div>
       <div class="seed-ground"></div>
@@ -147,7 +147,7 @@ body:not(.unlocked) .shell{visibility:hidden;pointer-events:none}body.unlocked .
 }
 </style>
 <div class="shell"><aside class="sidebar">
-<div class="brand"><span class="brand-icon">🌿</span> <span>Nutriendo<br>Futuros</span></div><div class="side-sub">SALUDABLES · SONORA<br>Vigilancia y seguimiento de DAI</div>
+<div class="brand nf-brand-identity"><img class="nf-brand-mark" src="../assets/mezquite-icono.svg" alt="Mezquite, emblema de Nutriendo Futuros"><span class="nf-brand-copy"><span class="nf-brand-wordmark">Nutriendo<br>Futuros</span><span class="nf-brand-strap">Raíces que cuidan · Sonora</span></span></div><div class="side-sub">SALUDABLES · SONORA<br>Vigilancia y seguimiento de DAI</div>
 <nav class="nav" aria-label="Navegación de módulos"><button data-nav="home" class="active"><span class="ico">◈</span> Panorama</button><button data-nav="capture"><span class="ico">✍</span> Captura</button><button data-nav="viewer"><span class="ico">▦</span> Visor y mapa</button><button data-nav="followup"><span class="ico">◎</span> Seguimiento</button><button data-nav="referrals"><span class="ico">↗</span> Referencias y PDF</button><button data-nav="contacts"><span class="ico">☏</span> Solicitudes de contacto</button><button data-nav="staff"><span class="ico">♟</span> Altas de personal</button><button data-nav="directory"><span class="ico">♧</span> Grupo estatal</button><button data-nav="institutions"><span class="ico">▤</span> Formatos oficiales</button><button data-nav="security"><span class="ico">♜</span> Seguridad</button></nav>
 <div class="side-bottom"><p>Datos de niñas y niños: confidenciales y sensibles. Este HTML no guarda expedientes en disco ni en almacenamiento del navegador.</p><span id="navStatus" class="tag warm">◌ Sin sesión</span><p><a href="https://doctopanda.github.io/nutriendo-futuros/" target="_blank" rel="noopener noreferrer">Abrir mapa territorial ↗</a></p></div></aside>
 <main class="main"><header class="top"><div><div class="kicker">Sistema Estatal de Seguimiento · NFS</div><h1 id="pageTitle">Panorama operativo</h1><p id="pageSubtitle">Captura longitudinal, folios únicos y control estricto de acceso por distrito.</p></div><div class="top-actions"><span class="chip" id="districtChip">Distrito: no asignado</span><button class="btn secondary" id="loginAction" type="button">Iniciar sesión</button><button class="btn ghost" id="logoutAction" type="button" hidden>Cerrar sesión</button></div></header>
