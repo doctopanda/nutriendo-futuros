@@ -43,3 +43,19 @@ La línea `<body class="nf-mezquite nf-visor">` del visor y `<body class="nf-mez
 Para las funciones nuevas, integrar el diseño en componentes y evitar estilos duplicados. Si se necesita una **ubicación Nutriendo Futuros** en el mapa, usar `mezquite-marcador.svg` solo para coordenadas verificadas de una capa de programa diferenciada de CLUES/CCT y de indicadores agregados protegidos.
 
 **Estado:** Identidad aplicada en código. La comprobación visual final en navegadores y pruebas funcionales con cuentas por rol quedan pendientes.
+
+
+## Corrección de fidelidad del 3 de noviembre de 2026
+
+La primera versión de los archivos `mezquite-*.svg` del sitio era una reinterpretación vectorial del árbol y difería del arte aprobado (opción B, Mezquite).
+
+Los seis recursos actuales proceden **directamente de la lámina original aprobada**, mediante extracción de cada elemento, tratamiento de transparencia y optimización WebP. Se empaquetan como SVG con imagen WebP incrustada para conservar el nombre y las referencias utilizadas por el mapa y el visor. **No son trazados vectoriales editables**: conservan los píxeles ilustrativos de la propuesta, encapsulados en SVG. Los PNG separados se entregan en el kit descargable.
+
+- `assets/mezquite-emblema.svg`: árbol original, copa, flores, raíces y vegetación sonorense
+- `assets/mezquite-sello.svg`: sello circular aprobado
+- `assets/mezquite-icono.svg` y `assets/mezquite-icono-claro.svg`: dos miniaturas
+- `assets/mezquite-marcador.svg` y `assets/mezquite-marcador-rosa.svg`: dos marcadores
+
+Estas actualizaciones sustituyen **solamente** recursos visuales compartidos. No se alteran el HTML, las funciones JavaScript, la lógica Leaflet, RLS, autenticación, conexión Supabase ni archivos de datos. Los pines de la identidad son ejemplos institucionales, no coordenadas asociadas a casos.
+
+Vista previa pública: `identidad.html`.
