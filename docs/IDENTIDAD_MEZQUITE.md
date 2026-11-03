@@ -4,6 +4,13 @@
 **Adopción:** 3 de noviembre de 2026  
 **Concepto rector:** Cobijo, alimento y comunidad desde las raíces.
 
+## Frase oficial del proyecto
+
+> **Un expediente, un folio, un futuro.**
+
+Lema para la plataforma Nutriendo Futuros. Conservar esta redacción exacta como referencia para futuras piezas de comunicación e interfaz. No reemplaza automáticamente los textos ya publicados.
+
+
 El **mezquite sonorense** es el emblema de la plataforma, el visor institucional, el mapa, los marcadores institucionales y las futuras superficies móviles. La imagen es una **interpretación gráfica** del mezquite y no pretende sustituir una lámina taxonómica.
 
 ## Colores maestros (inspiración Venusaur)
