@@ -30,7 +30,7 @@ body.nf-visor .sidebar .side-bottom{color:#C9E6DD;border-color:rgba(246,240,228,
 body.nf-visor .panel{border-color:#D8E7E1;border-radius:18px;box-shadow:0 4px 22px rgba(8,63,66,.055)}
 body.nf-visor .hero{background:linear-gradient(105deg,#075A59 0%,#176F6B 58%,#5E9569 120%)!important;border:1px solid rgba(246,240,228,.12);position:relative}
 body.nf-visor .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 90% 20%,rgba(236,136,155,.20),transparent 40%);pointer-events:none}
-body.nf-visor .hero .decor{display:block;width:145px;height:145px;max-width:35vw;background:url("mezquite-emblema.svg") center/contain no-repeat;font-size:0!important;opacity:.95}
+body.nf-visor .hero .decor{display:block;width:145px;height:145px;max-width:35vw;background:url("mezquite-sello.svg") center/contain no-repeat;font-size:0!important;opacity:.95}
 body.nf-visor .tag{background:#E2F0E9;color:#0B5E58}
 body.nf-visor .tag.warm{background:#FDF0EC;color:#8F5963}
 body.nf-visor :is(button.btn,.btn){background:#087571;color:#fff;border-color:#087571}
@@ -85,3 +85,9 @@ body.nf-map .leaflet-control-attribution{font-size:10px}
 @media(prefers-reduced-motion:reduce){
  body.nf-mezquite .nav button{transition:none}
 }
+/* Pin de marca en la sección cartográfica, independiente de los símbolos de escuelas y CLUES. */
+body.nf-map .nfs9 h3::before{content:"";display:inline-block;width:29px;height:35px;vertical-align:middle;margin-right:8px;background:url("mezquite-marcador.svg") center/contain no-repeat}
+body.nf-map .nf-map-pin-preview{display:flex;align-items:center;gap:9px;padding:9px;margin:12px 0;border:1px solid rgba(246,240,228,.26);border-radius:12px;background:rgba(8,63,66,.30);font-size:11px;color:#E0F1EC}
+body.nf-map .nf-map-pin-preview img{width:26px;height:35px;object-fit:contain}
+body.nf-visor .nf-visual-seal{display:flex;gap:8px;align-items:center;padding:7px 3px;margin:6px 0;color:#DDEFE7;font-size:10px;letter-spacing:.03em}
+body.nf-visor .nf-visual-seal img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 1px 6px rgba(8,63,66,.3))}
