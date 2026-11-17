@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#075A59"><title>NUTRIENDO FUTUROS | Gestión de accesos</title>
+<style>
+:root{font:15px/1.5 system-ui,Arial,sans-serif;color:#153f3c;background:#f2f7f3}
+*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(105deg,#083f42,#075a59);color:#fff;padding:28px max(20px,calc((100vw - 1020px)/2))}
+header h1{margin:0;font-size:clamp(25px,4vw,36px)}header p{margin:5px 0 0;color:#cee6de}
+main{max-width:1020px;margin:24px auto;padding:0 18px 35px}
+.panel{background:white;border:1px solid #d6e6dd;border-radius:18px;padding:22px;margin:15px 0;box-shadow:0 8px 24px #083f420d}
+.row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+h2{font-size:20px;margin:0 0 12px}.muted{color:#607d75}label{font-weight:700;font-size:13px;display:block;margin:12px 0 5px}
+input{width:100%;max-width:430px;padding:11px 12px;border:1px solid #b8cdc5;border-radius:10px;font:inherit}
+button,.button{border:0;border-radius:10px;padding:11px 15px;font:inherit;font-weight:700;cursor:pointer;color:white;background:#075a59;display:inline-block;text-decoration:none}
+button.secondary,.button.secondary{background:#e7f1ed;color:#075a59}button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.card{border:1px solid #dae7df;border-radius:15px;padding:17px;margin:13px 0}
+.card h3{margin:0 0 4px;font-size:17px}
+.pill{border-radius:99px;background:#ffefd6;padding:4px 10px;font-size:12px;color:#805317;font-weight:750}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:13px 0;font-size:13px}
+.meta span{display:block;color:#738a83;font-size:11px}
+.notice{background:#edf7f2;border-left:4px solid #409993;border-radius:9px;padding:12px 15px;margin:14px 0}
+.error{background:#fff0ee;border-color:#bd5b58;color:#8b3430}
+[hidden]{display:none!important}a{color:#11685f}small{color:#69837b}
+footer{font-size:12px;color:#69837b;margin-top:22px}
+</style></head><body>
+<header><h1>🌱 NUTRIENDO FUTUROS</h1><p>Gestión institucional de accesos · Autorización y trazabilidad</p></header>
+<main>
+<div class="row"><a href="../visor/" class="button secondary">← Volver al visor</a><span id="sessionLabel" class="muted">Sin sesión</span></div>
+<div id="message" role="status" aria-live="polite" hidden></div>
+<section id="loginPanel" class="panel"><h2>Acceso administrativo</h2>
+<p class="muted">Inicia sesión con la cuenta de Administrador Maestro o Estatal. El servidor comprueba tus permisos antes de revelar solicitudes.</p>
+<form id="loginForm"><label for="email">Correo electrónico</label><input type="email" id="email" autocomplete="username" required>
+<label for="password">Contraseña</label><input type="password" id="password" autocomplete="current-password" required>
+<div class="actions"><button type="submit" id="loginButton">Iniciar sesión</button></div></form></section>
+<section id="adminPanel" class="panel" hidden><div class="row"><div><h2>Bandeja de solicitudes</h2>
+<p class="muted">Solicitudes pendientes de autorización. Se muestran solamente a Maestro y Estatal.</p></div>
+<div class="actions"><button class="secondary" id="refreshButton">Actualizar</button><button class="secondary" id="logoutButton">Cerrar sesión</button></div></div>
+<div id="requests"></div><p><small>Al aprobar se asignan exclusivamente el rol y distrito solicitados. Las aprobaciones quedan registradas en la auditoría de Supabase.</small></p></section>
+<footer>Los permisos se verifican en Supabase, no en el navegador. Esta pantalla no expone expedientes clínicos ni permite modificar roles administrativos.</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script>
+<script>
+'use strict';
+const sb = window.supabase.createClient('https://neoihelwsuitgoeowrbc.supabase.co','sb_publishable_3UMbS8t2fTIEh5NZ1ZeF5w__YIb13oe');
+const el=id=>document.getElementById(id);
+let busy=false;
+function alertText(message,isError=false){const n=el('message');n.hidden=false;n.className='notice'+(isError?' error':'');n.textContent=message;}
+function clearAlert(){el('message').hidden=true;}
+function cell(title,value){const d=document.createElement('div'),k=document.createElement('span'),v=document.createElement('strong');k.textContent=title;v.textContent=value??'No registrado';d.append(k,v);return d;}
+function makeCard(item){
+ const card=document.createElement('article');card.className='card';
+ const head=document.createElement('div');head.className='row';
+ const h=document.createElement('h3');h.textContent=item.nombre_solicitado||'Nombre no declarado';
+ const pill=document.createElement('span');pill.className='pill';pill.textContent='PENDIENTE';
+ head.append(h,pill);card.append(head);
+ const correo=document.createElement('p');correo.textContent=item.correo||'';correo.className='muted';card.append(correo);
+ const meta=document.createElement('div');meta.className='meta';
+ meta.append(cell('Rol solicitado',item.rol_solicitado==='supervisor_distrital'?'Supervisor distrital':'Promotor de salud'),
+ cell('Distrito',item.distrito_solicitado?'DS'+String(item.distrito_solicitado).padStart(2,'0'):'No indicado'),
+ cell('Correo confirmado',item.correo_confirmado?'Sí':'No'),
+ cell('Fecha',item.fecha_solicitud?new Date(item.fecha_solicitud).toLocaleString('es-MX'):'No registrada'));
+ card.append(meta);
+ const button=document.createElement('button');button.textContent='Aprobar solicitud';
+ button.disabled=!item.correo_confirmado;button.title=item.correo_confirmado?'Autorizar el acceso solicitado':'Debe confirmar su correo';
+ button.addEventListener('click',async()=>{
+  if(busy)return;
+  const ok=window.confirm('¿Autorizar a '+(item.nombre_solicitado||item.correo)+' como '+item.rol_solicitado+' en DS'+item.distrito_solicitado+'?');
+  if(!ok)return;
+  busy=true;button.disabled=true;clearAlert();
+  try{const {data,error}=await sb.rpc('nfs_aprobar_alta',{p_user_id:item.user_id});
+   if(error)throw error;
+   alertText('Aprobación registrada: '+(data?.rol||item.rol_solicitado)+' / DS'+(data?.distrito_id||item.distrito_solicitado));
+   await loadRequests(false);
+  }catch(e){alertText('No se pudo aprobar: '+e.message,true);}
+  finally{busy=false;button.disabled=false;}
+ });
+ card.append(button);return card;
+}
+async function loadRequests(resetMessage=true){
+ if(resetMessage)clearAlert();
+ const root=el('requests');root.replaceChildren();
+ const info=document.createElement('p');info.className='muted';info.textContent='Consultando solicitudes…';root.append(info);
+ try{const {data,error}=await sb.rpc('nfs_listar_altas_pendientes');if(error)throw error;
+  root.replaceChildren();
+  if(!Array.isArray(data)||!data.length){const p=document.createElement('p');p.className='notice';p.textContent='No hay solicitudes pendientes.';root.append(p);return;}
+  data.forEach(item=>root.append(makeCard(item)));
+ }catch(e){root.replaceChildren();alertText('No fue posible consultar la bandeja: '+e.message,true);}
+}
+async function syncSession(){
+ const {data,error}=await sb.auth.getUser();
+ const user=error?null:data.user;
+ el('loginPanel').hidden=!!user;el('adminPanel').hidden=!user;el('sessionLabel').textContent=user?.email||'Sin sesión';
+ if(user)await loadRequests();
+}
+el('loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();clearAlert();el('loginButton').disabled=true;
+ try{const {error}=await sb.auth.signInWithPassword({email:el('email').value.trim(),password:el('password').value});if(error)throw error;
+ el('password').value='';await syncSession();
+ }catch(err){alertText('No se pudo iniciar sesión: '+err.message,true);}
+ finally{el('loginButton').disabled=false;}
+});
+el('logoutButton').addEventListener('click',async()=>{await sb.auth.signOut();clearAlert();await syncSession();});
+el('refreshButton').addEventListener('click',()=>loadRequests());
+syncSession().catch(e=>alertText('Error al iniciar la bandeja: '+e.message,true));
+</script></body></html>
