@@ -50,3 +50,10 @@ Revisar legislación aplicable de datos personales y expediente clínico, las au
 - Cartografía v7.2 y catálogo de preescolares proporcionados para esta estrategia.
 
 Última actualización del mapa: 16 de octubre de 2026. Visor institucional incorporado: 3 de noviembre de 2026.
+
+## Gestión de accesos (17-nov-2026)
+- [Bandeja administrativa de solicitudes](https://doctopanda.github.io/nutriendo-futuros/accesos/) · archivo [accesos/index.html](accesos/index.html).
+- Usa Supabase Auth y los RPC `nfs_listar_altas_pendientes()` y `nfs_aprobar_alta(uuid)`, con verificación de Maestro/Estatal activo del lado del servidor.
+- La aprobación valida correo confirmado, rol solicitado de promotor/supervisor y distrito 1 a 6; actualiza `nfs_usuarios`, sincroniza `nf_private.perfiles` mediante triggers existentes y escribe evento `nfs_alta_aprobada` en auditoría.
+- El mecanismo anterior `nf_listar_solicitudes_alta` consulta otra tabla y **no** se debe usar para registros de `nfs_usuarios`.
+- No se publican contraseñas ni claves de servicio. Falta prueba funcional en navegador con una cuenta administrativa y otra solicitante antes de declarar el flujo validado de extremo a extremo.
