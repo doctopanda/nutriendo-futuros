@@ -73,3 +73,10 @@ El cambio técnico **no reemplaza** autorización institucional, protección de 
 - La edición se limita a campos realmente faltantes; toda corrección registra motivo, usuario y cambios para consulta administrativa.
 - Los marcadores solo aparecen si la CLUES coincide con un hospital de referencia verificado y con coordenadas válidas; los demás folios permanecen visibles sin ubicación puntual.
 - Panel en fase de piloto técnico: falta prueba interactiva con usuarios por rol, validación de extremo a extremo y confirmación del despliegue de Pages.
+
+### Integración 18-nov-2026 · pendientes clicables y mapa privado
+- Desde el visor institucional, el indicador «N pendientes» abre un editor modal sin cerrar sesión. Los campos que requieren otro proceso (datos clínicos/catálogos) aparecen bloqueados con explicación.
+- La capa privada de folios se activa y desactiva en el mapa incrustado del visor, exclusivamente mediante RPC autenticada `nf_folios_para_mapa`; no modifica el mapa público ni expone domicilios de pacientes.
+- La capa se borra al cerrar sesión. Marcadores solo para unidades institucionales con coordenadas verificadas; los folios restantes se listan sin ubicación puntual.
+- El módulo `/calidad/` conserva auditoría y corrección, pero su mapa redundante se ocultó.
+- Pendiente validación E2E con los roles, y vincular CLUES públicas a un catálogo georreferenciado verificado; sin esto puede haber cero marcadores aun existiendo folios.
