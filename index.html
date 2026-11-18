@@ -4383,4 +4383,4 @@ root.querySelector('#nfs9regionfile').onchange=async e=>{const f=e.target.files?
 const search=root.querySelector('#nfs9search'),results=root.querySelector('#nfs9results');search.oninput=()=>{const q=norm(search.value);results.replaceChildren();if(q.length<3)return;const matches=NFS_SCHOOLS.filter(x=>window.NF_DISTRICTS.has(x.distrito)&&(norm(x.cct).includes(q)||norm(x.nombre).includes(q))).slice(0,10);for(const r of matches){const b=document.createElement('button');b.style.cssText='width:100%;text-align:left;background:#315a4d;margin:3px 0';b.textContent=r.cct+' · '+r.nombre;b.onclick=()=>{map.setView([r.lat,r.lon],14);L.popup().setLatLng([r.lat,r.lon]).setContent('<b>'+esc(r.nombre)+'</b><div>'+esc(r.cct)+'</div>').openOn(map)};results.appendChild(b)}};
 refresh();
 })();
-</script></body></html>
+</script><script defer src="./nf-mapa-privado.js"></script></body></html>
