@@ -1,6 +1,6 @@
 # NUTRIENDO FUTUROS · LEET-1 · Visibilidad poscaptura
 **Fecha:** 2026-11-18  
-**Estado:** backend aplicado en Supabase; integración visual poscaptura pendiente de prueba completa.  
+**Estado:** backend y navegación de interfaz actualizados; pendientes pruebas autenticadas en navegador con todos los roles.  
 **Proyecto:** `neoihelwsuitgoeowrbc`.
 
 ## Regla de operación
@@ -27,3 +27,10 @@ Prueba SQL de `nf_listar_folios` ejecutada con identidad de Supervisor DS06 en u
 - 1 expediente en alcance, 0 claves nominales, 0 cuasiidentificadores finos devueltos, 0 códigos LEET inválidos y 0 expedientes fuera de distrito.
 - Pendiente: comprobar permisos efectivos con tokens Supabase Auth de cada rol y sesiones reales (AAL), apertura/cierre de pantalla, limpieza de estado poscaptura y vistas de PDF/edición.
 - Mantener piloto técnicamente separado de autorización institucional y jurídica de uso de datos reales de menores.
+
+## Corrección del visor (18-nov-2026)
+- Se localizó el expediente con folio `NF-DS6-00000001` en `nf_private.pacientes`, asociado a LEET y a una valoración. No se migró ni eliminó el registro.
+- Se corrigió en `visor/index.html` el filtro municipal incompatible con la seudonimización; la columna del listado exhibe el alias LEET; al guardar, la interfaz abre el visor filtrado por el folio generado.
+- Se modificó `nf_detalle_folio` para devolver LEET, sin municipio, conservando auditoría, jurisdicción y datos clínicos seudonimizados. La interfaz borra la visualización nominal cuando se abandona el módulo.
+- Verificaciones SQL con supervisor distrital DS06 aprobadas; GitHub Pages desplegó el primer ajuste correctamente. La verificación funcional final con sesiones reales sigue pendiente.
+- Resguardo anterior de interfaz: rama `resguardo-visor-pre-leet-20261118`.
