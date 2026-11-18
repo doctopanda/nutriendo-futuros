@@ -302,7 +302,7 @@ const NFS_VISIT=[["Fecha y antropometría", [["fecha_valoracion", "Fecha de valo
   $('loginForm').onsubmit=login;$('newRecordForm').onsubmit=saveNew;$('followupSave').onclick=addFollowup;
   if(!prod){msg('Captura con autorización activa. Administrador Maestro puede guardar CLUES pendiente de revisión territorial. Los demás roles siguen sujetos al catálogo verificado.');$('loginAction').textContent='Iniciar sesión';$('loginAction').disabled=false;$('logoutAction').hidden=true;document.querySelectorAll('#captureSection input,#captureSection select,#captureSection textarea,#followupSection input,#followupSection select').forEach(el=>{if(el.type!=='button')el.disabled=true});$('saveRecord').disabled=true;$('followupSave').disabled=true;if(!authEnabled)return}
   if(!window.supabase||!window.supabase.createClient){msg('No se ha podido cargar Supabase JS. Comprueba la conexión y recarga.','error');return}
-  api=window.supabase.createClient(NFS_CONFIG.url,NFS_CONFIG.publishableKey,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:false}});
+  api=window.supabase.createClient(NFS_CONFIG.url,NFS_CONFIG.publishableKey,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:false}}); window.__NF_AUTH_CLIENT=api;
  }
  async function login(e){
   e?.preventDefault?.();
@@ -857,4 +857,4 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
 </script>
-</body></html>
+<script defer src="nf-pendientes-mapa.js"></script></body></html>
