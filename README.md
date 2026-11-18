@@ -66,3 +66,10 @@ El cambio técnico **no reemplaza** autorización institucional, protección de 
 - La aprobación valida correo confirmado, rol solicitado de promotor/supervisor y distrito 1 a 6; actualiza `nfs_usuarios`, sincroniza `nf_private.perfiles` mediante triggers existentes y escribe evento `nfs_alta_aprobada` en auditoría.
 - El mecanismo anterior `nf_listar_solicitudes_alta` consulta otra tabla y **no** se debe usar para registros de `nfs_usuarios`.
 - No se publican contraseñas ni claves de servicio. Falta prueba funcional en navegador con una cuenta administrativa y otra solicitante antes de declarar el flujo validado de extremo a extremo.
+
+## Panel de calidad y folios georreferenciados (18-nov-2026)
+- [Abrir panel institucional de calidad y mapa de folios](https://doctopanda.github.io/nutriendo-futuros/calidad/).
+- En Supabase se incorporaron RPC `nf_completar_faltantes` y `nf_folios_para_mapa`, con controles de rol y distrito.
+- La edición se limita a campos realmente faltantes; toda corrección registra motivo, usuario y cambios para consulta administrativa.
+- Los marcadores solo aparecen si la CLUES coincide con un hospital de referencia verificado y con coordenadas válidas; los demás folios permanecen visibles sin ubicación puntual.
+- Panel en fase de piloto técnico: falta prueba interactiva con usuarios por rol, validación de extremo a extremo y confirmación del despliegue de Pages.
