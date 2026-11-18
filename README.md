@@ -51,6 +51,15 @@ Revisar legislación aplicable de datos personales y expediente clínico, las au
 
 Última actualización del mapa: 16 de octubre de 2026. Visor institucional incorporado: 3 de noviembre de 2026.
 
+## Piloto de campo · validación en sitio (18-nov-2026)
+- **Estado técnico aplicado:** captura de nuevos ingresos sin revisión estatal previa, conservando autenticación, consentimiento, identidad mínima y detección de duplicados. La validación **operativa** queda marcada como `SITIO`.
+- **Auditoría de captura:** antes de guardar se advierten los campos pendientes. Se permite continuar y se registra `datos_incompletos`, la lista `campos_faltantes` y el histórico en `nf_private.auditoria_datos`.
+- **Folios:** siguen siendo consecutivos, transaccionales y únicos por distrito (`NF-DS1-00000001`, etc.). Se añadió captura habilitada para Supervisor Distrital activo de su propio distrito.
+- **Evidencia:** pruebas de alta y preauditoría con datos sintéticos, revertidas sin pacientes de prueba persistentes. Despliegue de la carátula completado por GitHub Pages.
+- [Protocolo del piloto y controles pendientes](docs/PILOTO_CAMPO_VALIDACION_EN_SITIO_2026-11-18.md) · [Migración SQL versionada](supabase/migracion_piloto_campo_validacion_sitio_20261118.sql).
+
+El cambio técnico **no reemplaza** autorización institucional, protección de datos ni la comprobación integral de acceso en navegador antes del tratamiento de expedientes reales de menores.
+
 ## Gestión de accesos (17-nov-2026)
 - [Bandeja administrativa de solicitudes](https://doctopanda.github.io/nutriendo-futuros/accesos/) · archivo [accesos/index.html](accesos/index.html).
 - Usa Supabase Auth y los RPC `nfs_listar_altas_pendientes()` y `nfs_aprobar_alta(uuid)`, con verificación de Maestro/Estatal activo del lado del servidor.
