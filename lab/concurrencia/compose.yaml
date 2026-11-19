@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: nf_test
+      POSTGRES_PASSWORD: local_only_not_for_production
+      POSTGRES_DB: nf_lab
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nf_test -d nf_lab"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    tmpfs: ["/var/lib/postgresql/data:size=128m"]
+    security_opt: ["no-new-privileges:true"]
+    restart: "no"
