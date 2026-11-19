@@ -123,6 +123,12 @@ async function run(){
    }else skip('Exportación nominal','permitido','No hay folio de prueba accesible');
    skip('Detalle clínico no nominal','Folio propio existente','No hay folios accesibles de prueba');
   }
+  status('Comprobando acceso sin sesión…');
+  const anon=window.supabase.createClient('https://neoihelwsuitgoeowrbc.supabase.co','sb_publishable_3UMbS8t2fTIEh5NZ1ZeF5w__YIb13oe',{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+  const anonMap=await anon.rpc('nf_folios_para_mapa',{p_distrito:null,p_limite:1});
+  done('Mapa sin autenticación','denegado',!!anonMap.error&&denied(anonMap.error),anonMap.error?'Denegación del servidor':'Acceso inesperado');
+  const anonNom=await anon.rpc('nf_datos_para_envio',{p_folio:'NF-DS6-99999999'});
+  done('Formato nominal sin sesión','denegado',!!anonNom.error&&denied(anonNom.error),anonNom.error?'Denegación del servidor':'Acceso inesperado');
   status('Verificando aislamiento de Data API…');
   const table=await sb.schema('nf_private').from('pacientes').select('id').limit(1);
   done('Tabla clínica directa','Sin datos directos',!!table.error||(Array.isArray(table.data)&&table.data.length===0),'Consulta de Data API '+(table.error?'bloqueada':'sin filas'));
